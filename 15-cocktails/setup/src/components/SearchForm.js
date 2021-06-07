@@ -1,12 +1,30 @@
-import React from 'react'
-import { useGlobalContext } from '../context'
+import React from 'react';
+import { useGlobalContext } from '../context';
 
 const SearchForm = () => {
-  return (
-    <div>
-      <h2>search form component</h2>
-    </div>
-  )
-}
+  const { setSearchTerm } = useGlobalContext();
+  const searchValue = React.useRef('');
 
-export default SearchForm
+  const searchCocktail = () => {
+    setSearchTerm(searchValue.current.value);
+  };
+  // 이것을 활용해서 display되는 item들의 값을 변경
+
+  return (
+    <section className='section search'>
+      <form className='search-form'>
+        <div className='form-control'>
+          <label htmlFor='name'>검색</label>
+          <input
+            type='text'
+            id='name'
+            ref={searchValue}
+            onChange={searchCocktail}
+          />
+        </div>
+      </form>
+    </section>
+  );
+};
+
+export default SearchForm;

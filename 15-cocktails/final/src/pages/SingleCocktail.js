@@ -1,20 +1,22 @@
-import React from 'react'
-import Loading from '../components/Loading'
-import { useParams, Link } from 'react-router-dom'
+import React from 'react';
+import Loading from '../components/Loading';
+import { useParams, Link } from 'react-router-dom';
+
+import CocktailList from '../components/CocktailList';
 
 export default function SingleCocktail() {
-  const { id } = useParams()
-  const [loading, setLoading] = React.useState(false)
-  const [cocktail, setCocktail] = React.useState(null)
+  const { id } = useParams();
+  const [loading, setLoading] = React.useState(false);
+  const [cocktail, setCocktail] = React.useState(null);
 
   React.useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     async function getCocktail() {
       try {
         const response = await fetch(
           `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`
-        )
-        const data = await response.json()
+        );
+        const data = await response.json();
         if (data.drinks) {
           const {
             strDrink: name,
@@ -28,14 +30,14 @@ export default function SingleCocktail() {
             strIngredient3,
             strIngredient4,
             strIngredient5,
-          } = data.drinks[0]
+          } = data.drinks[0];
           const ingredients = [
             strIngredient1,
             strIngredient2,
             strIngredient3,
             strIngredient4,
             strIngredient5,
-          ]
+          ];
           const newCocktail = {
             name,
             image,
@@ -44,23 +46,23 @@ export default function SingleCocktail() {
             glass,
             instructions,
             ingredients,
-          }
-          setCocktail(newCocktail)
+          };
+          setCocktail(newCocktail);
         } else {
-          setCocktail(null)
+          setCocktail(null);
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-      setLoading(false)
+      setLoading(false);
     }
-    getCocktail()
-  }, [id])
+    getCocktail();
+  }, [id]);
   if (loading) {
-    return <Loading/>
+    return <Loading />;
   }
   if (!cocktail) {
-    return <h2 className='section-title'>no cocktail to display</h2>
+    return <h2 className='section-title'>no cocktail to display</h2>;
   } else {
     const {
       name,
@@ -70,7 +72,7 @@ export default function SingleCocktail() {
       glass,
       instructions,
       ingredients,
-    } = cocktail
+    } = cocktail;
     return (
       <section className='section cocktail-section'>
         <Link to='/' className='btn btn-primary'>
@@ -98,12 +100,13 @@ export default function SingleCocktail() {
             <p>
               <span className='drink-data'>ingredients :</span>
               {ingredients.map((item, index) => {
-                return item ? <span key={index}> {item}</span> : null
+                return item ? <span key={index}> {item}</span> : null;
               })}
             </p>
           </div>
         </div>
+        <CocktailList />
       </section>
-    )
+    );
   }
 }
